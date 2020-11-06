@@ -1,36 +1,34 @@
-import { Scene, PerspectiveCamera, WebGLRenderer, BoxGeometry, MeshBasicMaterial, Mesh } from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { Scene, WebGLRenderer } from 'three';
+import camera from './gamelogic/camera';
+import player from './gamelogic/player';
+import Stats from 'three/examples/jsm/libs/stats.module.js';
 import './styles.css';
+
+// Stats
+var stats = new Stats();
+stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
+document.body.appendChild( stats.dom );
 
 // Scene
 const scene = new Scene();
-// Camera
-const camera = new PerspectiveCamera(
-    75,
-    window.innerWidth / window.innerHeight,
-    0.1,
-    1000
-);
+
 // Renderer
 const renderer = new WebGLRenderer();
 
-// Geomerty
-const geometry = new BoxGeometry();
-const material = new MeshBasicMaterial( { color: 0x00ff00, wireframe: true } );
-const cube = new Mesh( geometry, material );
-scene.add( cube );
+// Add player to scene
+scene.add( player );
 
-camera.position.z = 2;
-
+// Animation
 function animate() {
+    stats.begin();
+
     requestAnimationFrame( animate );
+
+    renderer.render( scene, camera );
     
-    cube.rotation.x += 0.01;
-    cube.rotation.y += 0.01;
-
-	renderer.render( scene, camera );
+    stats.end();
 }
-animate();
 
+animate();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
