@@ -1,31 +1,34 @@
 var path = require('path');
 
 module.exports = {
-
-    // Dev server config
     devServer: {
         contentBase: './dist',
         port: 9000
     },
-
-    // General webpack config
+    devtool: 'source-map',
     mode: 'development',
-    entry: './src/index.js',
+    entry: './src/index.ts',
     output: {
         filename: 'app.js',
         path: path.resolve(__dirname, 'dist'),
     },
-
-    // Build config
+    resolve: {
+        extensions: ['.ts', '.tsx', '.js']
+    },
     module: {
         rules: [
-          {
-            test: /\.css$/,
-            use: [
-              'style-loader',
-              'css-loader',
-            ],
-          },
+            {
+                test: /\.css$/,
+                use: [
+                    'style-loader',
+                    'css-loader',
+                ],
+            },
+            {
+                test: /\.tsx?$/,
+                use: 'ts-loader',
+                exclude: /node_modules/,
+            },
         ],
-      },
+    },
 };
